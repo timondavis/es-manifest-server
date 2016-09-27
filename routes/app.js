@@ -6,8 +6,8 @@ router.get( '/', function(req, res, next) {
     res.render('index');
 });
 
-router.get( '/manifest/test/create', manifestItemController.testCreate );
-router.get( '/manifest/all', manifestItemController.getAll );
-router.post( '/manifest/create-item', manifestItemController.createItem )
+router.get( '/manifest', manifestItemController.getAll );
+router.post( '/manifest', manifestItemController.createItem );
+router.delete( '/manifest/:itemId', manifestItemController.deleteItem );
 
 module.exports = router;

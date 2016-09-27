@@ -12,27 +12,26 @@ exports.getAll = function( req, res, next ) {
             return next( err );
         } else {
 
-            res.json( response );
+            res.status( 200 ).json( response );
         }
     })
-
 };
 
-exports.testCreate = function( req, res, next ) {
+exports.deleteItem = function( req, res, next ) {
 
-    var item = new ManifestItemModel({
-        dateReceived: '9/15/3013',
-        commodityName: 'Good Stuff',
-        unitPrice: 10,
-        tonnage: 15,
-        expiry: '9/30/3013'
-    })
+   ManifestItemModel.find({ _id: req.params.itemId }).remove().exec(
+       function ( err, response ) {
 
-    item.save();
+           if ( err ) {
+               console.log( err );
+               res.status( 404 );
+           } else {
+               res.status( 200 ).json( { 'status' : 'deleted' } );
+           }
+       }
+   );
+}
 
-    res.send( "<h2>Hello, thank you for registering</h2>" );
-
-};
 
 exports.createItem = function( req, res, next ) {
 
@@ -41,6 +40,6 @@ exports.createItem = function( req, res, next ) {
     var item = new ManifestItemModel( itemStats );
     item.save();
 
-    res.json( item );
+    res.status( 200 ).json( item );
 };
 
