@@ -12,13 +12,13 @@ var schema = new Schema({
         require: true
     },
     region : {
-        type: string,
+        type: String,
         require: true
     },
-    commodities : {
-        type: [ mongoose.Types.ObjectId ],
-        ref: 'Commodity'
-    }
+    commodities : [{
+        'type': Schema.Types.ObjectId,
+        'ref': 'Commodity'
+    }]
 
 });
 

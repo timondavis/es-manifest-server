@@ -8,7 +8,7 @@ var schema = new Schema({
         require: true
     },
     cost : {
-        type: number,
+        type: Number,
         require: true
     }
 });
