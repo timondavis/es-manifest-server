@@ -2,8 +2,7 @@ var MarketDataModel = require( '../models/market-data.server.model' );
 var CommodityModel = require( '../models/commodity.server.model' );
 
 exports.test = function( req, res ) {
-
-    var commodities = [
+var commodities = [
 
         { 'name': 'food', 'cost': 243 },
         { 'name': 'clothing', 'cost': 300 },
@@ -13,8 +12,8 @@ exports.test = function( req, res ) {
         { 'name': 'medical', 'cost': 787},
         { 'name': 'industrial', 'cost': 733 },
         { 'name': 'electronics', 'cost': 848 },
-        { 'name': 'heavy metals', 'cost': 1012 },
-        { 'name': 'luxury goods', 'cost': 1228 }
+        { 'name': 'heavyMetals', 'cost': 1012 },
+        { 'name': 'luxuryGoods', 'cost': 1228 }
     ];
 
     CommodityModel.collection.insert( commodities, function( err, commodityModels ) {
@@ -37,52 +36,39 @@ exports.test = function( req, res ) {
 
                 console.log( data );
             }
-
-
         });
 
     });
 
     res.status( 200 ).send( 'Save Request Accepted' );
+};
 
-    /*CommodityModel.create(
-        commodities[0],
-        commodities[1],
-        commodities[2],
-        commodities[3],
-        commodities[4],
-        commodities[5],
-        commodities[6],
-        commodities[7],
-        commodities[8],
-        commodities[9],
-        function( err, commodityModelInstance ) {
+exports.createItem = function( req, res, next ) {
 
-            if ( err ) return handleError( err );
-            commodityModels.push( commodityModelInstance._id );
+   CommodityModel.collection.insert( req.body.commodities, function( err, commodityModels ) {
+        if ( err ) {
+
+            console.log( err );
         }
-    ).then(
-       function( commodities ) {
 
-           console.log( commodities );
-           var marketData = {
-               'date': '9/14/3013',
-               'planet' : 'Rigel IV',
-               'region' : 'Human Space',
-               'commodities': commodityModels
-           };
+        req.body.commodities = commodityModels.insertedIds;
 
-           res.status(200).json( marketData );
-           marketData.save();
+        var marketData = new MarketDataModel( req.body );
 
+        marketData.save( function ( err, data ) {
+            if ( err ) {
 
-       },
-       function( error ) {
+                console.log( err );
+            } else {
 
-           console.log( error );
-           res.status(500).json( error );
-       }
-    );*/
+                console.log( data );
+            }
+        });
+
+    });
+
+    res.status(200).send( 'Save Request Accepted' );
+
 };
 
 exports.testRead = function( req, res ) {
@@ -94,10 +80,7 @@ exports.testRead = function( req, res ) {
             res.status( 500 ).json( { 'status': 'failed' } );
         }
 
-        res.status( 200 ).json( commodity );
+        res.status( 200 ).send( 'Save Request Accepted' );
     });
-};
-
-createCommodityModels = function createCommodityModels( commodities ) {
 };
 
