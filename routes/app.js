@@ -11,7 +11,7 @@ router.get( '/manifest', manifestItemController.getAll );
 router.post( '/manifest', manifestItemController.createItem );
 router.delete( '/manifest/:itemId', manifestItemController.deleteItem );
 
-router.get( '/market/data', marketDataController.getAll );
+router.get( '/market/data', marketDataController.getMarketData );
 router.post( '/market/data', marketDataController.createItem );
 
 module.exports = router;
