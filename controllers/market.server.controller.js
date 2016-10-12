@@ -5,11 +5,7 @@ exports.getMarketData = function ( req, res, next ) {
 
     var sort = extractSort( req.query );
     var filters = extractFilters( req.query );
-
-    console.log( filters );
-
     var query = MarketDataModel.find(filters).sort(sort).populate( 'commodities' );
-
 
     query.exec( function( err, response ) {
 
@@ -23,8 +19,6 @@ exports.getMarketData = function ( req, res, next ) {
 
 exports.deleteItem = function( req, res, next ) {
 
-    console.log( req.params.itemId );
-
     MarketDataModel.findOne({ _id: req.params.itemId }).exec(
         function ( err, document ) {
 
@@ -37,8 +31,6 @@ exports.deleteItem = function( req, res, next ) {
             }
         }
     )
-
-
 };
 
 var deleteCommodities = function deleteCommodities( commodities ) {
