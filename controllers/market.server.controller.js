@@ -21,6 +21,39 @@ exports.getMarketData = function ( req, res, next ) {
     });
 };
 
+exports.deleteItem = function( req, res, next ) {
+
+    console.log( req.params.itemId );
+
+    MarketDataModel.findOne({ _id: req.params.itemId }).exec(
+        function ( err, document ) {
+
+            if ( err ) {
+                console.log( err );
+            } else {
+                deleteCommodities( document.commodities );
+                document.remove();
+                res.status( 200 ).json( { 'status' : 'deleted' } );
+            }
+        }
+    )
+
+
+};
+
+var deleteCommodities = function deleteCommodities( commodities ) {
+
+    for ( var i = 0 ; i < commodities.length ; i++ ) {
+
+        deleteCommodity( commodities[i] );
+    }
+};
+
+var deleteCommodity = function deleteCommodity( id ) {
+
+    CommodityModel.find({ _id: id }).remove().exec();
+};
+
 exports.createItem = function( req, res, next ) {
 
     CommodityModel.collection.insert( req.body.commodities, function( err, commodityModels ) {

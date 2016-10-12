@@ -30,7 +30,7 @@ exports.deleteItem = function( req, res, next ) {
            }
        }
    );
-}
+};
 
 
 exports.createItem = function( req, res, next ) {
