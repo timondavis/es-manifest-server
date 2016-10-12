@@ -5,11 +5,7 @@ exports.getMarketData = function ( req, res, next ) {
 
     var sort = extractSort( req.query );
     var filters = extractFilters( req.query );
-
-    console.log( filters );
-
     var query = MarketDataModel.find(filters).sort(sort).populate( 'commodities' );
-
 
     query.exec( function( err, response ) {
 
@@ -19,6 +15,35 @@ exports.getMarketData = function ( req, res, next ) {
             res.status( 200 ).json( response );
         }
     });
+};
+
+exports.deleteItem = function( req, res, next ) {
+
+    MarketDataModel.findOne({ _id: req.params.itemId }).exec(
+        function ( err, document ) {
+
+            if ( err ) {
+                console.log( err );
+            } else {
+                deleteCommodities( document.commodities );
+                document.remove();
+                res.status( 200 ).json( { 'status' : 'deleted' } );
+            }
+        }
+    )
+};
+
+var deleteCommodities = function deleteCommodities( commodities ) {
+
+    for ( var i = 0 ; i < commodities.length ; i++ ) {
+
+        deleteCommodity( commodities[i] );
+    }
+};
+
+var deleteCommodity = function deleteCommodity( id ) {
+
+    CommodityModel.find({ _id: id }).remove().exec();
 };
 
 exports.createItem = function( req, res, next ) {
